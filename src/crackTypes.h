@@ -1,0 +1,10 @@
+#ifndef CRACKTYPES_H
+#define CRACKTYPES_H
+
+#define MAX_CRACKS (120)
+#define CRACK_AREA_WIDTH (800)
+#define CRACK_AREA_HEIGHT (600)
+
+typedef float cgrid_t[CRACK_AREA_WIDTH][CRACK_AREA_HEIGHT];
+
+#endif // CRACKTYPES_H
