@@ -1,7 +1,8 @@
 #include "testApp.h"
 
 //--------------------------------------------------------------
-void testApp::setup(){
+void testApp::setup()
+{
     ofSetVerticalSync( true );
     ofSetFrameRate( 60 );
     ofBackground( 0, 0, 0 );
@@ -21,13 +22,13 @@ void testApp::setup(){
     saveScreen.allocate(cameraWidth, cameraHeight, OF_IMAGE_COLOR);
     colorImg.allocate(cameraWidth,cameraHeight);
     doVideoWrite = false;
-/*
-    writer = cvCreateVideoWriter(
-                 "test.avi",
-                 CV_FOURCC('M','J','P','G'),
-                 15,
-                 size);
-*/
+    /*
+        writer = cvCreateVideoWriter(
+                     "test.avi",
+                     CV_FOURCC('M','J','P','G'),
+                     15,
+                     size);
+    */
     geoLayer = new GeometricLayer(screenWidth, screenHeight);
     orgLayer = new OrganicLayer(screenWidth, screenHeight);
     geoLayer->setup();
@@ -35,13 +36,15 @@ void testApp::setup(){
 
 }
 
-void testApp :: initCamera() {
+void testApp :: initCamera()
+{
 
     camera.setVerbose( true );
     camera.initGrabber( cameraWidth, cameraHeight );
 }
 
-void testApp :: initMotion() {
+void testApp :: initMotion()
+{
     cameraColorImage.allocate( cameraWidth, cameraHeight );
     cameraGrayImage.allocate( cameraWidth, cameraHeight );
     cameraGrayPrevImage.allocate( cameraWidth, cameraHeight );
@@ -53,7 +56,8 @@ void testApp :: initMotion() {
     //cameraMotionFadeAmount = 0.80f;
 }
 
-void testApp :: initImageMask() {
+void testApp :: initImageMask()
+{
 
     resizeImg.allocate( screenWidth, screenHeight );
     maskTexture.allocate( screenWidth, screenHeight, GL_RGBA );
@@ -61,14 +65,16 @@ void testApp :: initImageMask() {
     maskPixles = new unsigned char[ screenWidth * screenHeight * 4 ];
 }
 
-void testApp :: initImages() {
+void testApp :: initImages()
+{
     oldTerra.loadImage("images/oldTerra.cc.jpg");
     newTerra.loadImage("images/newTerra.cc.jpg");
     newImgPixles = new unsigned char[ screenWidth * screenHeight * 4 ];
     newImgPixles		= newTerra.getPixels();
 }
 
-void testApp :: initBlobTrack() {
+void testApp :: initBlobTrack()
+{
     bLearnBakground = true;
     threshold = 80;
 }
@@ -78,7 +84,8 @@ void testApp :: initBlobTrack() {
 //	UPDATE.
 //////////////////////////////////////////////
 
-void testApp::update(){
+void testApp::update()
+{
     updateCamera();
 
     if ( cameraNewFrame ) {
@@ -90,12 +97,14 @@ void testApp::update(){
     orgLayer->update();
 
 }
-void testApp :: updateCamera() {
+void testApp :: updateCamera()
+{
     camera.grabFrame();
     cameraNewFrame = camera.isFrameNew();
 }
 
-void testApp :: updateMotion( unsigned char *pixels ) {
+void testApp :: updateMotion( unsigned char *pixels )
+{
     cameraColorImage.setFromPixels( pixels, cameraWidth, cameraHeight );
 
     cameraGrayPrevImage	= cameraGrayImage;
@@ -114,28 +123,31 @@ void testApp :: updateMotion( unsigned char *pixels ) {
     contourFinder.findContours(cameraGrayDiffImage, 20, (cameraWidth*cameraHeight)/3, 10, true);	// find holes
 }
 
-void testApp :: updateImageMask() {
+void testApp :: updateImageMask()
+{
     resizeImg.scaleIntoMe(cameraMotionFloatImage);
     motionPixles	= resizeImg.getPixels();
-
-    for ( int i=0; i<screenWidth; i++ ) {
-        for ( int j=0; j<screenHeight; j++ ) {
-            int p = j * screenWidth + i;
-            maskPixles[ p * 4 + 0 ] = newImgPixles[ p * 3 + 0 ];
-            maskPixles[ p * 4 + 1 ] = newImgPixles[ p * 3 + 1 ];
-            maskPixles[ p * 4 + 2 ] = newImgPixles[ p * 3 + 2 ];
-            maskPixles[ p * 4 + 3 ] = motionPixles[ p ];
+    if (newImgPixles) {
+        for ( int i=0; i<screenWidth; i++ ) {
+            for ( int j=0; j<screenHeight; j++ ) {
+                int p = j * screenWidth + i;
+                maskPixles[ p * 4 + 0 ] = newImgPixles[ p * 3 + 0 ];
+                maskPixles[ p * 4 + 1 ] = newImgPixles[ p * 3 + 1 ];
+                maskPixles[ p * 4 + 2 ] = newImgPixles[ p * 3 + 2 ];
+                maskPixles[ p * 4 + 3 ] = motionPixles[ p ];
+            }
         }
-    }
 
-    maskTexture.loadData( maskPixles, screenWidth, screenHeight, GL_RGBA );
+        maskTexture.loadData( maskPixles, screenWidth, screenHeight, GL_RGBA );
+    }
 }
 
 //////////////////////////////////////////////
 //	DRAW.
 //////////////////////////////////////////////
 //--------------------------------------------------------------
-void testApp::draw(){
+void testApp::draw()
+{
     glDisable(GL_BLEND);
 
     ofSetupScreen();
@@ -144,7 +156,7 @@ void testApp::draw(){
     oldTerra.draw(0,0);
     // newTerra.draw(0,0);
     //drawCamera();
-  //  orgLayer->draw();
+    //  orgLayer->draw();
     drawImageMask();
     geoLayer->seedFromBlob(&contourFinder, cameraWidth, cameraHeight);
     geoLayer->draw();
@@ -173,23 +185,27 @@ void testApp::draw(){
     }
 
 }
-void testApp :: drawCamera() {
+void testApp :: drawCamera()
+{
     ofSetColor( 0xFFFFFF );
     camera.draw( 0, 0, cameraWidth, cameraHeight );
 }
 
 
-void testApp :: drawMotion() {
+void testApp :: drawMotion()
+{
     ofSetColor( 0xFFFFFF );
-   // cameraMotionFloatImage.draw( 960, 480, 320, 240 );
+    // cameraMotionFloatImage.draw( 960, 480, 320, 240 );
     cameraMotionFloatImage.draw( 800, 0, 320, 240 );
 }
 
-void testApp :: drawMotionDebug() {
+void testApp :: drawMotionDebug()
+{
     //
 }
 
-void testApp :: drawImageMask() {
+void testApp :: drawImageMask()
+{
     ofEnableAlphaBlending();
     maskTexture.draw( 0, 0 );
     ofDisableAlphaBlending();
@@ -199,44 +215,56 @@ void testApp :: drawImageMask() {
 //////////////////////////////////////////////
 
 //--------------------------------------------------------------
-void testApp::keyPressed(int key){
+void testApp::keyPressed(int key)
+{
 
 }
 
 //--------------------------------------------------------------
-void testApp::keyReleased(int key){
+void testApp::keyReleased(int key)
+{
 
 }
 
 //--------------------------------------------------------------
-void testApp::mouseMoved(int x, int y ){
+void testApp::mouseMoved(int x, int y )
+{
 
 }
 
 //--------------------------------------------------------------
-void testApp::mouseDragged(int x, int y, int button){
+void testApp::mouseDragged(int x, int y, int button)
+{
 
 }
 
 //--------------------------------------------------------------
-void testApp::mousePressed(int x, int y, int button){
+void testApp::mousePressed(int x, int y, int button)
+{
 
 }
 
 //--------------------------------------------------------------
-void testApp::mouseReleased(int x, int y, int button){
+void testApp::mouseReleased(int x, int y, int button)
+{
     doVideoWrite = !doVideoWrite;
 
 }
 
 //--------------------------------------------------------------
-void testApp::windowResized(int w, int h){
+void testApp::windowResized(int w, int h)
+{
 
 }
-void testApp::exit() {
+void testApp::exit()
+{
 
     geoLayer->exit();
     orgLayer->exit();
-   // cvReleaseVideoWriter(&writer);
+    delete geoLayer;
+    delete orgLayer;
+    //  delete maskPixles[][];
+    //  delete newImgPixles[][];
+    // cvReleaseVideoWriter(&writer);
 }
 
