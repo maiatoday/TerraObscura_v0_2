@@ -263,8 +263,6 @@ void testApp::exit()
     orgLayer->exit();
     delete geoLayer;
     delete orgLayer;
-    //  delete maskPixles[][];
-    //  delete newImgPixles[][];
     // cvReleaseVideoWriter(&writer);
 }
 
