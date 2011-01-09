@@ -4,7 +4,7 @@
 #include "ofxOpenCv.h"
 
 #include "cv.h"
-#include "highgui.h"
+//#include "highgui.h"
 
 //test tagging
 
