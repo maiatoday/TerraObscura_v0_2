@@ -2,60 +2,6 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
-
-}
-
-//--------------------------------------------------------------
-void testApp::update(){
-
-}
-
-//--------------------------------------------------------------
-void testApp::draw(){
-
-}
-
-//--------------------------------------------------------------
-void testApp::keyPressed(int key){
-
-}
-
-//--------------------------------------------------------------
-void testApp::keyReleased(int key){
-
-}
-
-//--------------------------------------------------------------
-void testApp::mouseMoved(int x, int y ){
-
-}
-
-//--------------------------------------------------------------
-void testApp::mouseDragged(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void testApp::mousePressed(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void testApp::mouseReleased(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void testApp::windowResized(int w, int h){
-
-}
-
-/*
-//////////////////////////////////////////////
-//	SETUP.
-//////////////////////////////////////////////
-
-void testApp :: setup() {
     ofSetVerticalSync( true );
     ofSetFrameRate( 60 );
     ofBackground( 0, 0, 0 );
@@ -75,16 +21,18 @@ void testApp :: setup() {
     saveScreen.allocate(cameraWidth, cameraHeight, OF_IMAGE_COLOR);
     colorImg.allocate(cameraWidth,cameraHeight);
     doVideoWrite = false;
+/*
     writer = cvCreateVideoWriter(
                  "test.avi",
                  CV_FOURCC('M','J','P','G'),
                  15,
                  size);
-
+*/
     geoLayer = new GeometricLayer(screenWidth, screenHeight);
     orgLayer = new OrganicLayer(screenWidth, screenHeight);
     geoLayer->setup();
     orgLayer->setup();
+
 }
 
 void testApp :: initCamera() {
@@ -124,11 +72,13 @@ void testApp :: initBlobTrack() {
     bLearnBakground = true;
     threshold = 80;
 }
+
+//--------------------------------------------------------------
 //////////////////////////////////////////////
 //	UPDATE.
 //////////////////////////////////////////////
 
-void testApp :: update() {
+void testApp::update(){
     updateCamera();
 
     if ( cameraNewFrame ) {
@@ -138,8 +88,8 @@ void testApp :: update() {
 
     geoLayer->update();
     orgLayer->update();
-}
 
+}
 void testApp :: updateCamera() {
     camera.grabFrame();
     cameraNewFrame = camera.isFrameNew();
@@ -184,8 +134,8 @@ void testApp :: updateImageMask() {
 //////////////////////////////////////////////
 //	DRAW.
 //////////////////////////////////////////////
-
-void testApp :: draw() {
+//--------------------------------------------------------------
+void testApp::draw(){
     glDisable(GL_BLEND);
 
     ofSetupScreen();
@@ -210,6 +160,7 @@ void testApp :: draw() {
         20
     );
     if (doVideoWrite) {
+        /*
         IplImage * tempImg = cvCreateImage(
                                  cvSize(cameraWidth,cameraHeight),
                                  IPL_DEPTH_8U,
@@ -218,9 +169,10 @@ void testApp :: draw() {
         colorImg.setFromPixels(saveScreen.getPixels(), cameraWidth,cameraHeight);
         cvCvtColor(colorImg.getCvImage(), tempImg, CV_RGB2BGR);
         cvWriteFrame(writer,tempImg);
+        */
     }
-}
 
+}
 void testApp :: drawCamera() {
     ofSetColor( 0xFFFFFF );
     camera.draw( 0, 0, cameraWidth, cameraHeight );
@@ -242,44 +194,49 @@ void testApp :: drawImageMask() {
     maskTexture.draw( 0, 0 );
     ofDisableAlphaBlending();
 }
-
 //////////////////////////////////////////////
 //	HANDLERS.
 //////////////////////////////////////////////
 
-void testApp :: keyPressed( int key ) {
+//--------------------------------------------------------------
+void testApp::keyPressed(int key){
 
 }
 
-void testApp :: keyReleased( int key ) {
+//--------------------------------------------------------------
+void testApp::keyReleased(int key){
 
 }
 
-void testApp :: mouseMoved( int x, int y ) {
+//--------------------------------------------------------------
+void testApp::mouseMoved(int x, int y ){
 
 }
 
-void testApp :: mouseDragged( int x, int y, int button ) {
+//--------------------------------------------------------------
+void testApp::mouseDragged(int x, int y, int button){
 
 }
 
-void testApp :: mousePressed( int x, int y, int button ) {
+//--------------------------------------------------------------
+void testApp::mousePressed(int x, int y, int button){
 
 }
 
-void testApp :: mouseReleased( int x, int y, int button ) {
+//--------------------------------------------------------------
+void testApp::mouseReleased(int x, int y, int button){
     doVideoWrite = !doVideoWrite;
-}
-
-void testApp :: windowResized( int w, int h ) {
 
 }
 
+//--------------------------------------------------------------
+void testApp::windowResized(int w, int h){
+
+}
 void testApp::exit() {
 
     geoLayer->exit();
     orgLayer->exit();
-    cvReleaseVideoWriter(&writer);
+   // cvReleaseVideoWriter(&writer);
 }
-*/
 
